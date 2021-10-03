@@ -1,0 +1,7 @@
+.displays {
+  text-align: right;
+  font-size: 24px;
+  border: solid 1px black;
+  background-color: darkslategray;
+  color: white;
+}
