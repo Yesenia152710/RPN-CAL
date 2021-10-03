@@ -1,39 +1,45 @@
 import React, { Component } from "react";
 import "./keypad.css";
+import "./display.css";
 
 class Keypads extends Component {
   constructor(props) {
     super(props);
-    this.state = { input: "", previous: "", operator: "" };
+    this.state = { cal: "", result: "", operator: "" };
   }
+
+  update = (value) => {
+    this.setState({ cal: this.cal + value });
+    console.log(this.state.cal);
+  };
 
   clickedButton = (e) => {
     if (e === "+" || e === "-" || e === "/" || e === "*") {
       this.setState({ operator: e });
       console.log(e);
     } else {
-      this.setState({ input: e });
-      console.log(this.state.input);
+      this.setState({ cal: e });
+      console.log(this.state.cal);
     }
   };
 
   clear = (e) => {
-    this.setState({ input: "" });
-    this.setState({ previous: "" });
+    this.setState({ cal: "" });
+    this.setState({ result: "" });
     this.setState({ operator: "" });
   };
 
   addNumtoInput = (e) => {
-    if (this.input !== "") {
-      this.setState({ input: this.state.input + e });
-      console.log(this.state.input);
+    if (this.cal !== "") {
+      this.setState({ cal: this.state.cal + e });
+      console.log(this.state.cal);
     }
   };
 
   decimalInput = (e) => {
-    if (this.state.input.indexOf(".") === -1) {
-      this.setState({ input: this.state.input + e });
-      console.log(this.state.input);
+    if (this.state.cal.indexOf(".") === -1) {
+      this.setState({ cal: this.state.cal + e });
+      console.log(this.state.cal);
     }
   };
 
@@ -56,6 +62,10 @@ class Keypads extends Component {
   render() {
     return (
       <div className="keypad">
+        <div name="displays">
+          <span>0</span>
+          {this.update}
+        </div>
         <div className="top__row">
           <button name="clear" onClick={(e) => this.clear}>
             C
