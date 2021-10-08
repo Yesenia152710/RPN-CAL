@@ -15,8 +15,15 @@ function App() {
     setCalc(calc + value);
 
     if (!ops.includes(value)) {
-      setResult(eval(calc + value).toString());
+      setResult(eval(calc + value));
     }
+  };
+
+  const updateStack = (value) => {
+    if (ops.includes(value)) {
+      return;
+    }
+    setStack(calc);
   };
 
   const createDigits = () => {
@@ -32,18 +39,28 @@ function App() {
     return digits;
   };
 
+  // const unstack = () => {
+  //   if (stack.length === 0) return;
+  //   const newStack = [...stack];
+  //   const unstacked = newStack.splice(newStack.length - 1, 1)[0];
+  //   setStack(newStack);
+  //   return unstacked;
+  // };
+  // console.log(unstack);
+
   const calculate = () => {
-    setCalc(eval(calc).toString());
+    if (stack.length < 0) {
+      return setStack(parseFloat(calc).toString());
+    }
+
+    setCalc(calc);
   };
 
-  const enter = (thingToAdd) => {
-    if (parseFloat(thingToAdd) === 0) return;
-
-    const newStack = [...stack];
-    newStack.push({ value: parseFloat(thingToAdd) });
-    setStack(newStack);
+  const enter = () => {
+    updateStack();
     clear();
   };
+  console.log(stack);
 
   const del = () => {
     if (calc === "") {
@@ -58,18 +75,27 @@ function App() {
     setCalc("");
     setResult("");
   };
+
+  const stackedItems = () => {
+    const stackItem = [];
+    for (let i = 0; i < stack.length; i++) {
+      const element = stack[i];
+      stackItem.push(<li key={i}>{element.value}</li>);
+    }
+    console.log(stackItem);
+  };
   return (
     <div className="App">
       <div className="calculator">
         <div className="display">
-          ({result ? <span>{result}</span> : ""}){calc || "0"}
+          <ul className="stackItem">{stack}</ul>({result ? <span>{result}</span> : ""}){calc || "0"}
         </div>
 
         <div className="operators">
           <button onClick={clear}>C</button>
           <button onClick={() => updateCalc("/")}>/</button>
           <button onClick={() => updateCalc("*")}>*</button>
-          <button onClick={() => updateCalc("+")}>+</button>
+          <button onClick={calculate}>+</button>
           <button onClick={() => updateCalc("-")}>-</button>
 
           <button onClick={del}>DEL</button>
